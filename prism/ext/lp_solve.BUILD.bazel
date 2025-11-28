@@ -1,0 +1,101 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_java//java:defs.bzl", "java_library")
+
+filegroup(
+    name = "lpsolve55_src",
+    srcs = glob([
+       "lp_MDO.c",
+       "shared/commonlib.c",
+       "shared/mmio.c",
+       "shared/myblas.c",
+       "ini.c",
+       "fortify.c",
+       "colamd/colamd.c",
+       "lp_rlp.c",
+       "lp_crash.c",
+       "bfp/bfp_LUSOL/lp_LUSOL.c",
+       "bfp/bfp_LUSOL/LUSOL/lusol.c",
+       "lp_Hash.c",
+       "lp_lib.c",
+       "lp_wlp.c",
+       "lp_matrix.c",
+       "lp_mipbb.c",
+       "lp_MPS.c",
+       "lp_params.c",
+       "lp_presolve.c",
+       "lp_price.c",
+       "lp_pricePSE.c",
+       "lp_report.c",
+       "lp_scale.c",
+       "lp_simplex.c",
+       "lp_SOS.c",
+       "lp_utils.c",
+       "yacc_read.c",
+    ]),
+)
+
+filegroup(
+    name = "lpsolve55_hdr",
+    srcs = glob([
+        "*.h",
+        "shared/*.h",
+        "bfp/*.h",
+        "bfp/bfp_LUSOL/*.h",
+        "bfp/bfp_LUSOL/LUSOL/*.h",
+        "colamd/*.h",
+    ]),
+)
+
+cc_library(
+    name = "lpsolve55",
+    srcs = [":lpsolve55_src", ":lpsolve55_hdr"],
+    hdrs = glob([
+        "lp_lib.h",
+        "bfp/lp_BFP*.c",
+        "bfp/bfp_LUSOL/LUSOL/lusol*.c",
+    ]),
+    local_defines = [
+        "PIC",
+        "YY_NEVER_INTERACTIVE",
+        "PARSER_LP",
+        "INVERSE_ACTIVE=INVERSE_LUSOL",
+        "RoleIsExternalInvEngine"
+    ],
+    includes = [
+        "shared",
+        "bfp",
+        "bfp/bfp_LUSOL",
+        "bfp/bfp_LUSOL/LUSOL",
+        "colamd",
+    ],
+    copts = [
+        "-fPIC",
+    ],
+    linkopts = ["-lc", "-lm", "-ldl"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "lpsolve55_jni",
+    srcs = glob(["extra/lp_solve_5.5_java/src/c/*"]),
+    deps = [":lpsolve55", "@bazel_tools//tools/jdk:jni"]
+)
+
+cc_shared_library(
+    name = "lpsolve55j",
+    deps = [":lpsolve55_jni"],
+    visibility = ["//visibility:public"],
+)
+
+java_library(
+    name = "lpsolve55_java",
+    srcs = glob(["extra/lp_solve_5.5_java/src/java/lpsolve/*.java"]),
+    data = [":lpsolve55j"],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "lp_solve",
+    actual = ":lpsolve55_java",
+    visibility = ["//visibility:public"],
+)

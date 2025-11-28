@@ -1,0 +1,47 @@
+load("@rules_foreign_cc//foreign_cc:defs.bzl", "configure_make")
+
+filegroup(
+    name = "all_src",
+    srcs = glob(["**"]),
+)
+
+configure_make(
+    name = "cudd_static",
+    configure_in_place = True,
+    lib_source = ":all_src",
+    out_static_libs = select({
+        "@platforms//os:linux": ["libcudd.a"],
+        "@platforms//os:osx": ["libcudd.a"],
+        "@platforms//os:windows": ["libcudd.lib"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    env = {
+        "AR": "ar",
+    },
+    visibility = ["//visibility:public"],
+)
+
+configure_make(
+    name = "cudd_shared",
+    configure_in_place = True,
+    configure_options = [
+        "--enable-shared"
+    ],
+    lib_source = ":all_src",
+    out_shared_libs = select({
+        "@platforms//os:linux": ["libcudd.so"],
+        "@platforms//os:osx": ["libcudd.dylib"],
+        "@platforms//os:windows": ["libcudd.dll"],
+        "//conditions:default": ["@platforms//:incompatible"],
+    }),
+    env = {
+        "AR": "ar",
+    },
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "cudd",
+    actual = ":cudd_shared",
+    visibility = ["//visibility:public"],
+)

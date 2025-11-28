@@ -1,0 +1,27 @@
+module(name = "prism", version = "4.9")
+
+bazel_dep(name = "rules_cc", version = "0.2.14")
+bazel_dep(name = "rules_foreign_cc", version = "0.15.1")
+bazel_dep(name = "rules_java", version = "9.0.3")
+bazel_dep(name = "platforms", version = "1.0.0")
+git_repository = use_repo_rule("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+git_repository(
+    name = "cudd",
+    remote = "https://github.com/prismmodelchecker/cudd.git",
+    branch = "master",
+    build_file = "prism/ext/cudd.BUILD.bazel",
+)
+
+http_archive(
+    name = "lp_solve",
+    url = "https://github.com/lp-solve/lp_solve/archive/refs/tags/5.5.2.14.tar.gz",
+    sha256 = "3d8c01e9ea9ca8f60e9495cfdf1108548446b0b36b8f0a5f5712e4f0c05d71ea",
+    strip_prefix = "lp_solve-5.5.2.14",
+    build_file = "prism/ext/lp_solve.BUILD.bazel",
+    patch_cmds = [
+        "rm extra/lp_solve_5.5_java/src/java/lpsolve/build",
+        "rm extra/lp_solve_5.5_java/src/java/lpsolve/build.bat",
+    ]
+)
