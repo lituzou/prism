@@ -47,7 +47,7 @@ filegroup(
 )
 
 cc_library(
-    name = "lpsolve55",
+    name = "lpsolve55_c",
     srcs = [":lpsolve55_src", ":lpsolve55_hdr"],
     hdrs = glob([
         "lp_lib.h",
@@ -78,7 +78,7 @@ cc_library(
 cc_library(
     name = "lpsolve55_jni",
     srcs = glob(["extra/lp_solve_5.5_java/src/c/*"]),
-    deps = [":lpsolve55", "@bazel_tools//tools/jdk:jni"]
+    deps = [":lpsolve55_c", "@bazel_tools//tools/jdk:jni"]
 )
 
 cc_shared_library(
@@ -88,7 +88,7 @@ cc_shared_library(
 )
 
 java_library(
-    name = "lpsolve55_java",
+    name = "lpsolve55",
     srcs = glob(["extra/lp_solve_5.5_java/src/java/lpsolve/*.java"]),
     data = [":lpsolve55j"],
     visibility = ["//visibility:public"],
@@ -96,6 +96,6 @@ java_library(
 
 alias(
     name = "lp_solve",
-    actual = ":lpsolve55_java",
+    actual = ":lpsolve55",
     visibility = ["//visibility:public"],
 )

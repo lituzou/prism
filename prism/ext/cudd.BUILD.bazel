@@ -6,8 +6,11 @@ filegroup(
 )
 
 configure_make(
-    name = "cudd_static",
+    name = "cudd",
     configure_in_place = True,
+    configure_options = [
+        "--enable-shared"
+    ],
     lib_source = ":all_src",
     out_static_libs = select({
         "@platforms//os:linux": ["libcudd.a"],
@@ -15,19 +18,6 @@ configure_make(
         "@platforms//os:windows": ["libcudd.lib"],
         "//conditions:default": ["@platforms//:incompatible"],
     }),
-    env = {
-        "AR": "ar",
-    },
-    visibility = ["//visibility:public"],
-)
-
-configure_make(
-    name = "cudd_shared",
-    configure_in_place = True,
-    configure_options = [
-        "--enable-shared"
-    ],
-    lib_source = ":all_src",
     out_shared_libs = select({
         "@platforms//os:linux": ["libcudd.so"],
         "@platforms//os:osx": ["libcudd.dylib"],
@@ -37,11 +27,5 @@ configure_make(
     env = {
         "AR": "ar",
     },
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "cudd",
-    actual = ":cudd_shared",
     visibility = ["//visibility:public"],
 )
