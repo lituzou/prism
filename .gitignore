@@ -56,3 +56,8 @@ prism/\.settings/
 /.clwb/
 
 # End of https://www.toptal.com/developers/gitignore/api/bazel
+
+# Local Bazel settings
+.bazelrc.local
+.bazelrc.user
+MODULE.bazel.lock
