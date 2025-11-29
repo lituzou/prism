@@ -1,0 +1,37 @@
+diff --git a/Makefile.am b/Makefile.am
+index b909821..dda7cf0 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,6 +1,6 @@
+ ACLOCAL_AMFLAGS = -I m4
+ 
+-include_HEADERS = cudd/cudd.h
++include_HEADERS = cudd/cudd.h cudd/cuddInt.h config.h st/st.h mtr/mtr.h epd/epd.h util/util.h
+ if DDDMP
+ include_HEADERS += dddmp/dddmp.h
+ endif
+diff --git a/Makefile.in b/Makefile.in
+index fcdb29b..dd9f299 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -500,7 +500,8 @@ am__can_run_installinfo = \
+     n|no|NO) false;; \
+     *) (install-info --version) >/dev/null 2>&1;; \
+   esac
+-am__include_HEADERS_DIST = cudd/cudd.h dddmp/dddmp.h \
++am__include_HEADERS_DIST = cudd/cudd.h cudd/cuddInt.h config.h st/st.h \
++	mtr/mtr.h epd/epd.h util/util.h dddmp/dddmp.h \
+ 	cplusplus/cuddObj.hh
+ HEADERS = $(include_HEADERS)
+ am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP) \
+@@ -869,7 +870,9 @@ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+ ACLOCAL_AMFLAGS = -I m4
+-include_HEADERS = cudd/cudd.h $(am__append_1) $(am__append_2)
++include_HEADERS = cudd/cudd.h cudd/cuddInt.h config.h st/st.h \
++	mtr/mtr.h epd/epd.h util/util.h $(am__append_1) \
++	$(am__append_2)
+ check_SCRIPTS = cudd/test_cudd.test st/test_st.test mtr/test_mtr.test \
+ 	dddmp/test_dddmp.test cplusplus/test_obj.test
+ dist_check_DATA = cudd/r7x8.1.mat cudd/r7x8.1.out cudd/extra.out \

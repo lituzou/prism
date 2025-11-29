@@ -2,7 +2,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 load("@rules_java//java:defs.bzl", "java_library")
 
 filegroup(
-    name = "lpsolve55_src",
+    name = "lpsolve55_c_src",
     srcs = glob([
        "lp_MDO.c",
        "shared/commonlib.c",
@@ -35,7 +35,7 @@ filegroup(
 )
 
 filegroup(
-    name = "lpsolve55_hdr",
+    name = "lpsolve55_c_hdr",
     srcs = glob([
         "*.h",
         "shared/*.h",
@@ -48,7 +48,7 @@ filegroup(
 
 cc_library(
     name = "lpsolve55_c",
-    srcs = [":lpsolve55_src", ":lpsolve55_hdr"],
+    srcs = [":lpsolve55_c_src", ":lpsolve55_c_hdr"],
     hdrs = glob([
         "lp_lib.h",
         "bfp/lp_BFP*.c",

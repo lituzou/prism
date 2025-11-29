@@ -1,0 +1,15 @@
+diff --git a/extra/lp_solve_5.5_java/src/java/lpsolve/build b/extra/lp_solve_5.5_java/src/java/lpsolve/build
+deleted file mode 100644
+index 52e59ca..0000000
+--- a/extra/lp_solve_5.5_java/src/java/lpsolve/build
++++ /dev/null
+@@ -1,2 +0,0 @@
+-:
+-javac *.java
+diff --git a/extra/lp_solve_5.5_java/src/java/lpsolve/build.bat b/extra/lp_solve_5.5_java/src/java/lpsolve/build.bat
+deleted file mode 100644
+index 879057b..0000000
+--- a/extra/lp_solve_5.5_java/src/java/lpsolve/build.bat
++++ /dev/null
+@@ -1 +0,0 @@
+-javac *.java

@@ -10,8 +10,10 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 git_repository(
     name = "cudd",
     remote = "https://github.com/prismmodelchecker/cudd.git",
-    branch = "master",
+    commit = "a92e66648f54b9da1fae166482f2459e163fc7d7",
     build_file = "prism/ext/cudd.BUILD.bazel",
+    patches = ["prism/ext/cudd.patch"],
+    patch_strip = 1,
 )
 
 http_archive(
@@ -20,8 +22,6 @@ http_archive(
     sha256 = "3d8c01e9ea9ca8f60e9495cfdf1108548446b0b36b8f0a5f5712e4f0c05d71ea",
     strip_prefix = "lp_solve-5.5.2.14",
     build_file = "prism/ext/lp_solve.BUILD.bazel",
-    patch_cmds = [
-        "rm extra/lp_solve_5.5_java/src/java/lpsolve/build",
-        "rm extra/lp_solve_5.5_java/src/java/lpsolve/build.bat",
-    ]
+    patches = ["prism/ext/lp_solve.patch"],
+    patch_strip = 1,
 )
