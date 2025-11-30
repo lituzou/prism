@@ -1,8 +1,7 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
-load("@rules_java//java:defs.bzl", "java_library")
 
 filegroup(
-    name = "lpsolve55_c_src",
+    name = "lpsolve55_src",
     srcs = glob([
        "lp_MDO.c",
        "shared/commonlib.c",
@@ -35,7 +34,7 @@ filegroup(
 )
 
 filegroup(
-    name = "lpsolve55_c_hdr",
+    name = "lpsolve55_hdr",
     srcs = glob([
         "*.h",
         "shared/*.h",
@@ -47,8 +46,8 @@ filegroup(
 )
 
 cc_library(
-    name = "lpsolve55_c",
-    srcs = [":lpsolve55_c_src", ":lpsolve55_c_hdr"],
+    name = "lpsolve55",
+    srcs = [":lpsolve55_src", ":lpsolve55_hdr"],
     hdrs = glob([
         "lp_lib.h",
         "bfp/lp_BFP*.c",
@@ -72,25 +71,6 @@ cc_library(
         "-fPIC",
     ],
     linkopts = ["-lc", "-lm", "-ldl"],
-    visibility = ["//visibility:public"],
-)
-
-cc_library(
-    name = "lpsolve55_jni",
-    srcs = glob(["extra/lp_solve_5.5_java/src/c/*"]),
-    deps = [":lpsolve55_c", "@bazel_tools//tools/jdk:jni"]
-)
-
-cc_shared_library(
-    name = "lpsolve55j",
-    deps = [":lpsolve55_jni"],
-    visibility = ["//visibility:public"],
-)
-
-java_library(
-    name = "lpsolve55",
-    srcs = glob(["extra/lp_solve_5.5_java/src/java/lpsolve/*.java"]),
-    data = [":lpsolve55j"],
     visibility = ["//visibility:public"],
 )
 

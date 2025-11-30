@@ -1,0 +1,27 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_java//java:defs.bzl", "java_library")
+
+cc_library(
+    name = "lpsolve55_jni",
+    srcs = glob(["src/c/*"]),
+    deps = ["@lp_solve//:lp_solve", "@bazel_tools//tools/jdk:jni"]
+)
+
+cc_shared_library(
+    name = "lpsolve55j",
+    deps = [":lpsolve55_jni"],
+    visibility = ["//visibility:public"],
+)
+
+java_library(
+    name = "lpsolve55_java",
+    srcs = glob(["src/java/lpsolve/*.java"]),
+    data = [":lpsolve55j"],
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "lp_solve_java",
+    actual = ":lpsolve55_java",
+    visibility = ["//visibility:public"],
+)

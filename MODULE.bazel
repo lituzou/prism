@@ -18,10 +18,18 @@ git_repository(
 
 http_archive(
     name = "lp_solve",
-    url = "https://github.com/lp-solve/lp_solve/archive/refs/tags/5.5.2.14.tar.gz",
-    sha256 = "3d8c01e9ea9ca8f60e9495cfdf1108548446b0b36b8f0a5f5712e4f0c05d71ea",
-    strip_prefix = "lp_solve-5.5.2.14",
+    url = "https://github.com/lp-solve/lp_solve/releases/download/5.5.2.14/lp_solve_5.5.2.14_source.tar.gz",
+    sha256 = "a4bbdc881128bdbe920a38e134c9add5db47f9aa814a0a018ba940b0f3c278c3",
+    strip_prefix = "lp_solve",
     build_file = "prism/ext/lp_solve.BUILD.bazel",
-    patches = ["prism/ext/lp_solve.patch"],
+)
+
+http_archive(
+    name = "lp_solve_java",
+    url = "https://github.com/lp-solve/lp_solve/releases/download/5.5.2.14/lp_solve_5.5.2.14_java.zip",
+    sha256 = "79e23d4653c5f54b35b8c8a69f3d1bd277c2bf10cca1729834f240199c44b949",
+    strip_prefix = "lp_solve_5.5_java",
+    build_file = "prism/ext/lp_solve_java.BUILD.bazel",
+    patches = ["prism/ext/lp_solve_java.patch"],
     patch_strip = 1,
 )

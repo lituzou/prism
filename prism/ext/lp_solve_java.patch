@@ -1,0 +1,13 @@
+diff --git a/src/java/lpsolve/build b/src/java/lpsolve/build
+deleted file mode 100644
+--- a/src/java/lpsolve/build
++++ /dev/null
+@@ -1,2 +0,0 @@
+-:
+-javac *.java
+diff --git a/src/java/lpsolve/build.bat b/src/java/lpsolve/build.bat
+deleted file mode 100644
+--- a/src/java/lpsolve/build.bat
++++ /dev/null
+@@ -1 +0,0 @@
+-javac *.java

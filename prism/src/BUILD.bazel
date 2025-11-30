@@ -1,0 +1,36 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+cc_library(
+    name = "dd_c",
+    srcs = glob(["dd/*.cc"]),
+    deps = ["@cudd//:cudd", "//prism:prism_include"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "dd",
+    deps = [":dd_c"],
+    visibility = ["//visibility:public"],
+)
+
+cc_binary(
+    name = "dd_test",
+    srcs = ["dd/dd_test.cc"],
+    deps = [":dd_c"],
+    dynamic_deps = [":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_library(
+    name = "odd_c",
+    srcs = glob(["*.cc"]),
+    deps = ["//:prism_headers", "@bazel_tools//tools/jdk:jni", "//prism/src/dd:dd_c"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "odd",
+    deps = [":odd_c"],
+    dynamic_deps = ["//prism/src/dd:dd"],
+    visibility = ["//visibility:public"],
+)
