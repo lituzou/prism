@@ -4,12 +4,13 @@ load("@rules_java//java:defs.bzl", "java_library")
 cc_library(
     name = "lpsolve55_jni",
     srcs = glob(["src/c/*"]),
-    deps = ["@lp_solve//:lp_solve", "@bazel_tools//tools/jdk:jni"]
+    deps = ["@lp_solve//:lpsolve55_c", "@bazel_tools//tools/jdk:jni"]
 )
 
 cc_shared_library(
     name = "lpsolve55j",
     deps = [":lpsolve55_jni"],
+    dynamic_deps = ["@lp_solve//:lpsolve55"],
     visibility = ["//visibility:public"],
 )
 
