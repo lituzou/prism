@@ -125,9 +125,8 @@ cc_shared_library(
 )
 
 java_binary(
-    name = "GUIPrism",
+    name = "prism_java",
     srcs = glob(["**/*.java"]),
-    main_class = "userinterface.GUIPrism",
     deps = [
         "//prism:prism_jars",
         "@lp_solve_java//:lp_solve_java",
