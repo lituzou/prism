@@ -1,8 +1,21 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_java//java:defs.bzl", "java_import")
 
 cc_library(
     name = "prism_include",
     hdrs = glob(["include/*.h", "include/jni/*.h"]),
     includes = ["include"],
+    visibility = ["//visibility:public"],
+)
+
+java_import(
+    name = "prism_jars",
+    jars = glob(["lib/*.jar"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "prism_resources",
+    srcs = glob(["images/*", "dtds/*"]),
     visibility = ["//visibility:public"],
 )

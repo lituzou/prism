@@ -1,4 +1,5 @@
-load("@rules_cc//cc:defs.bzl", "cc_library")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_shared_library", "cc_binary")
+load("@rules_java//java:defs.bzl", "java_binary")
 
 cc_library(
     name = "dd_c",
@@ -121,4 +122,18 @@ cc_shared_library(
     deps = [":prismhybrid_c"],
     dynamic_deps = [":prismsparse", ":prism", ":dv", ":odd", ":dd"],
     visibility = ["//visibility:public"],
+)
+
+java_binary(
+    name = "GUIPrism",
+    srcs = glob(["**/*.java"]),
+    main_class = "userinterface.GUIPrism",
+    deps = [
+        "//prism:prism_jars",
+        "@lp_solve_java//:lp_solve_java",
+    ],
+    data = [":dd", ":jdd", ":odd", ":dv", ":prism", ":prismmtbdd", ":prismsparse", ":prismhybrid"],
+    resources = ["//prism:prism_resources"],
+    resource_strip_prefix = "prism",
+    javacopts = ["-XepDisableAllChecks"],
 )
