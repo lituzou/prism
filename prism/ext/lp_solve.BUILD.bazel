@@ -46,7 +46,7 @@ filegroup(
 )
 
 cc_library(
-    name = "lpsolve55_c",
+    name = "lpsolve55_lib",
     srcs = [":lpsolve55_src", ":lpsolve55_hdr"],
     hdrs = glob([
         "lp_lib.h",
@@ -71,17 +71,5 @@ cc_library(
         "-fPIC",
     ],
     linkopts = ["-lc", "-lm", "-ldl"],
-    visibility = ["//visibility:public"],
-)
-
-cc_shared_library(
-    name = "lpsolve55",
-    deps = [":lpsolve55_c"],
-    visibility = ["//visibility:public"],
-)
-
-alias(
-    name = "lp_solve",
-    actual = ":lpsolve55",
     visibility = ["//visibility:public"],
 )

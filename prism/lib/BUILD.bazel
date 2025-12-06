@@ -1,0 +1,82 @@
+load("@rules_cc//cc:defs.bzl", "cc_shared_library")
+load("@rules_java//java:defs.bzl", "java_import", "java_library", "java_binary")
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+
+copy_file(
+    name = "pepa_zip_to_jar",
+    src = "pepa.zip",
+    out = "pepa.jar",
+)
+
+java_import(
+    name = "prism_jars",
+    jars = glob(["*.jar"]) + [":pepa_zip_to_jar"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "lpsolve55",
+    deps = ["@lp_solve//:lpsolve55_lib"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "lpsolve55j",
+    deps = ["@lp_solve_java//:lpsolve55j_lib"],
+    dynamic_deps = [":lpsolve55"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "dd",
+    deps = ["//prism/src:dd_lib", "@cudd//:cudd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "jdd",
+    deps = ["//prism/src:jdd_lib"],
+    dynamic_deps = [":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "odd",
+    deps = ["//prism/src:odd_lib"],
+    dynamic_deps = [":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "dv",
+    deps = ["//prism/src:dv_lib"],
+    dynamic_deps = [":odd", ":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "prism",
+    deps = ["//prism/src:prism_lib"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "prismmtbdd",
+    deps = ["//prism/src:prismmtbdd_lib"],
+    dynamic_deps = [":prism", ":dv", ":odd", ":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "prismsparse",
+    deps = ["//prism/src:prismsparse_lib"],
+    dynamic_deps = [":lpsolve55", ":prism", ":dv", ":odd", ":dd"],
+    visibility = ["//visibility:public"],
+)
+
+cc_shared_library(
+    name = "prismhybrid",
+    deps = ["//prism/src:prismhybrid_lib"],
+    dynamic_deps = [":prismsparse", ":prism", ":dv", ":odd", ":dd"],
+    visibility = ["//visibility:public"],
+)

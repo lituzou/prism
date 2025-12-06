@@ -1,138 +1,76 @@
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_shared_library", "cc_binary")
+load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary")
 load("@rules_java//java:defs.bzl", "java_binary")
 
 cc_library(
-    name = "dd_c",
+    name = "dd_lib",
     srcs = glob(["dd/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "dd",
-    deps = [":dd_c", "@cudd//:cudd"],
-    visibility = ["//visibility:public"],
-)
-
-cc_binary(
-    name = "dd_test",
-    srcs = ["dd/dd_test.cc"],
-    deps = ["@cudd//:cudd", "//prism:prism_include"],
-    dynamic_deps = [":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "jdd_c",
+    name = "jdd_lib",
     srcs = glob(["jdd/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "jdd",
-    deps = [":jdd_c"],
-    dynamic_deps = [":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "odd_c",
+    name = "odd_lib",
     srcs = glob(["odd/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "odd",
-    deps = [":odd_c"],
-    dynamic_deps = [":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "dv_c",
+    name = "dv_lib",
     srcs = glob(["dv/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "dv",
-    deps = [":dv_c"],
-    dynamic_deps = [":odd", ":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "prism_c",
+    name = "prism_lib",
     srcs = glob(["prism/*.cc"]),
     deps = ["//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "prism",
-    deps = [":prism_c"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "prismmtbdd_c",
+    name = "prismmtbdd_lib",
     srcs = glob(["mtbdd/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "prismmtbdd",
-    deps = [":prismmtbdd_c"],
-    dynamic_deps = [":prism", ":dv", ":odd", ":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "prismsparse_c",
+    name = "prismsparse_lib",
     srcs = glob(["sparse/*.cc"]),
-    deps = ["@lp_solve//:lpsolve55_c", "@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
+    deps = ["@lp_solve//:lpsolve55_lib", "@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "prismsparse",
-    deps = [":prismsparse_c"],
-    dynamic_deps = ["@lp_solve//:lpsolve55", ":prism", ":dv", ":odd", ":dd"],
-    visibility = ["//visibility:public"],
-)
-
 cc_library(
-    name = "prismhybrid_c",
+    name = "prismhybrid_lib",
     srcs = glob(["hybrid/*.cc"]),
     deps = ["@cudd//:cudd", "//prism:prism_include", "@bazel_tools//tools/jdk:jni"],
     linkopts = ["-lm"],
     visibility = ["//visibility:public"],
 )
 
-cc_shared_library(
-    name = "prismhybrid",
-    deps = [":prismhybrid_c"],
-    dynamic_deps = [":prismsparse", ":prism", ":dv", ":odd", ":dd"],
-    visibility = ["//visibility:public"],
-)
-
-java_binary(
-    name = "prism_java",
+java_library(
+    name = "prism",
     srcs = glob(["**/*.java"]),
     deps = [
-        "//prism:prism_jars",
-        "@lp_solve_java//:lp_solve_java",
+        "//prism/lib:prism_jars",
+        "@lp_solve_java//:lpsolve55_java",
     ],
-    data = [":dd", ":jdd", ":odd", ":dv", ":prism", ":prismmtbdd", ":prismsparse", ":prismhybrid"],
     resources = ["//prism:prism_resources"],
     resource_strip_prefix = "prism",
     javacopts = ["-XepDisableAllChecks"],
+    visibility = ["//visibility:public"],
 )
