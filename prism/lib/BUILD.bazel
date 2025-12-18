@@ -80,3 +80,13 @@ cc_shared_library(
     dynamic_deps = [":prismsparse", ":prism", ":dv", ":odd", ":dd"],
     visibility = ["//visibility:public"],
 )
+
+java_binary(
+    name = "Prism",
+    main_class = "userinterface.GUIPrism",
+    data = [":lpsolve55", ":lpsolve55j", ":dd", ":jdd", ":odd", ":dv", ":prism", ":prismmtbdd", ":prismsparse", ":prismhybrid"],
+    jvm_flags = ["-Djava.library.path=prism/lib"],
+    runtime_deps = [
+        "//prism/src:prism",
+    ],
+)
