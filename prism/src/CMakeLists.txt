@@ -26,7 +26,7 @@ target_link_libraries(prism PUBLIC JNI::JNI)
 add_executable(ngprism "${CMAKE_CURRENT_SOURCE_DIR}/prism/ngprism.c")
 if(WIN32)
     message(STATUS "Windows detected: ngprism will link winsocket library")
-    target_link_libraries(ngprism PRIVATE ws2_32)
+    target_link_libraries(ngprism PRIVATE -lws2_32)
 endif()
 
 file(GLOB PRISMMTBDD_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/mtbdd/*.cc")
