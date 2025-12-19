@@ -6,6 +6,11 @@ ExternalProject_Add(cudd_src
     PREFIX ${CUDD_INSTALL_DIR}
     SOURCE_DIR ${CUDD_ROOT}
     BINARY_DIR ${CUDD_BINARY_DIR}
+    # Avoid autoconf issue by changing time-stamp
+    PATCH_COMMAND sleep 1
+    COMMAND touch ${CUDD_ROOT}/aclocal.m4
+    COMMAND sleep 1
+    COMMAND touch ${CUDD_ROOT}/configure ${CUDD_ROOT}/config.h.in ${CUDD_ROOT}/Makefile.in
     CONFIGURE_COMMAND
         ${CUDD_ROOT}/configure
         --prefix=${CUDD_INSTALL_DIR} CC=${CMAKE_C_COMPILER}
