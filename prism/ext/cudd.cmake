@@ -1,11 +1,9 @@
 set(CUDD_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../cudd")
 set(CUDD_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/cudd")
-set(CUDD_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/cudd-build")
 
 ExternalProject_Add(cudd_src
     PREFIX ${CUDD_INSTALL_DIR}
     SOURCE_DIR ${CUDD_ROOT}
-    BINARY_DIR ${CUDD_BINARY_DIR}
     # Avoid autoconf issue by changing time-stamp
     PATCH_COMMAND sleep 1
     COMMAND touch ${CUDD_ROOT}/aclocal.m4
@@ -26,8 +24,8 @@ ExternalProject_Add(cudd_src
     COMMAND cp ${CUDD_ROOT}/mtr/mtr.h ${CUDD_INSTALL_DIR}/include
     COMMAND cp ${CUDD_ROOT}/epd/epd.h ${CUDD_INSTALL_DIR}/include
     COMMAND cp ${CUDD_ROOT}/util/util.h ${CUDD_INSTALL_DIR}/include
-    COMMAND cp ${CUDD_BINARY_DIR}/config.h ${CUDD_INSTALL_DIR}/include # generated header
-    BUILD_IN_SOURCE OFF
+    COMMAND cp ${CUDD_ROOT}/config.h ${CUDD_INSTALL_DIR}/include # generated header
+    BUILD_IN_SOURCE ON
     LOG_CONFIGURE ON
     LOG_BUILD ON
     LOG_INSTALL ON
